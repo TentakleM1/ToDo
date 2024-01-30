@@ -1,10 +1,12 @@
+/// Инициализация пользователя
 const LocalStrategy = require('passport-local').Strategy
 const { pool } = require('./dbConfig')
 const bcrypt = require('bcrypt')
 
 function initialize(passport) {
-  console.log('Initialized')
+  console.log('Инициализация пользователя')
 
+  /// Поиск в базе данных пользователя с такой же почтой
   const authenticateUser = (email, password, done) => {
     console.log(email, password)
     pool.query(
@@ -27,13 +29,13 @@ function initialize(passport) {
               return done(null, user)
             } else {
               //password корректный
-              return done(null, false, { message: 'Password is incorrect' })
+              return done(null, false, { message: 'Пароль правильный' })
             }
           })
         } else {
           // нет пользователя
           return done(null, false, {
-            message: 'No user with that email address',
+            message: 'Пользователь не найден ',
           })
         }
       }
