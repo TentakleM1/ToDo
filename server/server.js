@@ -21,17 +21,17 @@ app.set('view engine', 'ejs')
 
 app.use(
   session({
-    // Key we want to keep secret which will encrypt all of our information
+    // Ключ, который мы хотим сохранить в секрете, который зашифрует всю нашу информацию
     secret: process.env.SESSION_SECRET,
-    // Should we resave our session variables if nothing has changes which we dont
+    // Должны ли мы повторно сохранять наши переменные сеанса, если ничего не изменилось, чего мы не делаем
     resave: false,
-    // Save empty value if there is no vaue which we do not want to do
+    // Сохраните пустое значение, если нет value, чего мы не хотим делать
     saveUninitialized: false,
   })
 )
-// Funtion inside passport which initializes passport
+// Функция внутри паспорта, которая инициализирует паспорт
 app.use(passport.initialize())
-// Store our variables to be persisted across the whole session. Works with app.use(Session) above
+// Сохраните наши переменные, которые будут сохраняться в течение всего сеанса. Работает с app.use(Session) выше
 app.use(passport.session())
 app.use(flash())
 
@@ -44,7 +44,7 @@ app.get('/users/register', checkAuthenticated, (req, res) => {
 })
 
 app.get('/users/login', checkAuthenticated, (req, res) => {
-  // flash sets a messages variable. passport sets the error message
+  // flash задает переменную messages. passport задает сообщение об ошибке
   console.log(req.session.flash.error)
   res.render('login.ejs')
 })
