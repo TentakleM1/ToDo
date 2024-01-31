@@ -2,19 +2,19 @@ const { pool } = require('../dbConfig')
 const bcrypt = require('bcrypt')
 
 async function register(req, res) {
-  const { login, password, password2 } = req.body
+  const { login, password, repytpassword } = req.body
 
   let errors = []
 
   console.log({
     login,
     password,
-    password2,
+    repytpassword,
   })
   ///////////////// Проверка на вшивость
 
   ////  Проверка все ли поля заполнены
-  if (!login || !password || !password2) {
+  if (!login || !password || !repytpassword) {
     errors.push({ message: 'Пожалуйста заполните все поля ввода данных' })
   }
 
@@ -24,13 +24,13 @@ async function register(req, res) {
   }
 
   //// Проверка совпадают ли пароли в поля ввода данных
-  if (password !== password2) {
+  if (password !== repytpassword) {
     errors.push({ message: 'Пароли не совпадают' })
   }
 
   //// Если все ОК то проверка сначала на почту после регистрация
   if (errors.length > 0) {
-    res.render('register', { errors, login, password, password2 })
+    res.render('register', { errors, login, password, repytpassword })
   } else {
     const hashedPassword = await bcrypt.hash(password, 10)
     console.log(hashedPassword)

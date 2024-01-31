@@ -4,7 +4,10 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
-
+const path = require('path')
+console.log(
+  path.join(__dirname, '../front/vite-project/dist/src/pages/auth/auth.html')
+)
 const register = require('./register/register')
 
 require('dotenv').config()
@@ -19,9 +22,8 @@ initializePassport(passport)
 // Middleware
 
 // Parses details from a form
-app.use(express.urlencoded({ extended: false }))
-app.set('view engine', 'ejs')
-
+app.use(express.json())
+app.use(express.static(path.join(__dirname, '../front/vite-project/dist')))
 app.use(
   session({
     // Ключ, который мы хотим сохранить в секрете, который зашифрует всю нашу информацию
@@ -43,13 +45,19 @@ app.get('/', (req, res) => {
 })
 
 app.get('/users/register', checkAuthenticated, (req, res) => {
-  res.render('register.ejs')
+  res.sendFile(
+    path.join(
+      __dirname,
+      '../front/vite-project/dist/src/pages/registration/registration.html'
+    )
+  )
 })
 
 app.get('/users/login', checkAuthenticated, (req, res) => {
   // flash задает переменную messages. passport задает сообщение об ошибке
-  console.log(req.session.flash.error)
-  res.render('login.ejs')
+  res.sendFile(
+    path.join(__dirname, '../front/vite-project/dist/src/pages/auth/auth.html')
+  )
 })
 
 app.get('/users/dashboard', checkNotAuthenticated, (req, res) => {

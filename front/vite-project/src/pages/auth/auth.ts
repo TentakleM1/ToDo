@@ -1,49 +1,24 @@
+import Authorization from "../../core/authorization/authorization"
 
-class Registration {
-    constructor(nameInput : string) {
-        this.login = document.getElementById(nameInput);
-        this.password = document.getElementById('password');
-        this.btn = document.getElementById('btn');
+const authorization = new Authorization('login')
 
-        this.loginWord = ''
-        this.passwordWord = ''
+const btn = authorization.getBtnElement()
 
-        this.login.addEventListener('keyup', e => {
-            if(e.keyCode === 32) {
-                this.login.value = this.loginWord
-              } else {
-                this.loginWord = this.login.value
-              }
-        })
+async function postUser(url, data) {
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+    })
 
-        this.password.addEventListener('keyup', e => {
-            if(e.keyCode === 32) {
-                this.password.value = this.passwordWord
-              } else {
-                this.passwordWord = this.password.value
-              }
-        })
-    }
-
-    getUser() {
-        const user : {login: string, password: string} = {
-            login: this.login.value,
-            password: this.password.value
-        }
-
-        return user
-    }
-
-    getBtnElement() {
-        return this.btn
-    }
-
+    let result = await response.json()
+    console.log(result.message)
 }
 
-const registration = new Registration('login')
-
-const btn = registration.getBtnElement()
-
 btn.addEventListener('click', (e) => {
-    console.log(registration.getUser())
+
+    postUser('http://localhost:2000/users/login', authorization.getUser())
+    
 })
