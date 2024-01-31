@@ -2,20 +2,19 @@ const { pool } = require('../dbConfig')
 const bcrypt = require('bcrypt')
 
 async function register(req, res) {
-  const { name, email, password, password2 } = req.body
+  const { login, password, password2 } = req.body
 
   let errors = []
 
   console.log({
-    name,
-    email,
+    login,
     password,
     password2,
   })
   ///////////////// Проверка на вшивость
 
   ////  Проверка все ли поля заполнены
-  if (!name || !email || !password || !password2) {
+  if (!login || !password || !password2) {
     errors.push({ message: 'Пожалуйста заполните все поля ввода данных' })
   }
 
@@ -38,8 +37,8 @@ async function register(req, res) {
     // Validation passed
     pool.query(
       `SELECT * FROM base
-        WHERE email = $1`,
-      [email],
+        WHERE login = $1`,
+      [login],
       (err, results) => {
         if (err) {
           console.log(err)
@@ -48,17 +47,17 @@ async function register(req, res) {
 
         if (results.rows.length > 0) {
           return res.render('register', {
-            message: 'Email уже зарегистрирован',
+            message: 'Login уже зарегистрирован',
           })
         }
 
         /////      Всё ОК пошла регистрация
         else {
           pool.query(
-            `INSERT INTO base (name, email, password)
-                VALUES ($1, $2, $3)
+            `INSERT INTO base (login, password)
+                VALUES ($1, $2)
                 RETURNING id, password`,
-            [name, email, hashedPassword],
+            [login, hashedPassword],
             (err, results) => {
               if (err) {
                 throw err

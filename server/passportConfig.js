@@ -7,11 +7,11 @@ function initialize(passport) {
   console.log('Инициализация пользователя')
 
   /// Поиск в базе данных пользователя с такой же почтой
-  const authenticateUser = (email, password, done) => {
-    console.log(email, password)
+  const authenticateUser = (login, password, done) => {
+    console.log(login, password)
     pool.query(
-      `SELECT * FROM base WHERE email = $1`,
-      [email],
+      `SELECT * FROM base WHERE login = $1`,
+      [login],
       (err, results) => {
         if (err) {
           throw err
@@ -44,7 +44,7 @@ function initialize(passport) {
 
   passport.use(
     new LocalStrategy(
-      { usernameField: 'email', passwordField: 'password' },
+      { userloginField: 'login', passwordField: 'password' },
       authenticateUser
     )
   )
