@@ -30,7 +30,7 @@ async function register(req, res) {
 
   //// Если все ОК то проверка сначала на почту после регистрация
   if (errors.length > 0) {
-    res.render('register', { errors, name, email, password, password2 })
+    res.render('register', { errors, login, password, password2 })
   } else {
     const hashedPassword = await bcrypt.hash(password, 10)
     console.log(hashedPassword)
