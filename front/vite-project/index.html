@@ -3,12 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <link rel="stylesheet" href="index.scss">
+    <title>ToDo</title>
   </head>
   <body>
     <div id="app">
-      <a href="./src/pages/auth/auth.html">Auth</a>
-      <a href="./src/pages/registration/regestration.html">Registration</a>
+      <div id="myDIV" class="header">
+        <h2>Мой список дел</h2>
+        <form action="">
+          <input type="text" id="text" placeholder="Название...">
+          <button type="button" id="addText" class="btn">Добавить</button>
+        </form>
+      </div>      
+      <ul id="lists">
+        <li>Попасть в спортзал</li>
+        <li class="checked">Оплатить счета</li>
+        <li>Познакомься с Джорджем</li>
+      </ul>
+      <script type="module" src="./src/core/todo/todo.ts"></script>
     </div>
   </body>
 </html>
